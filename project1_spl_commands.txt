@@ -1,0 +1,21 @@
+
+
+| tstats count where index=* by index
+
+
+| tstats count where index=* by index, sourcetype 
+| sort - count
+
+
+| tstats count where index=* by _time, index, sourcetype 
+| sort - count 
+
+
+| tstats count where index=* by  index, sourcetype 
+| sort - count 
+| head 5
+
+
+| tstats count where index=* by _time, index, sourcetype
+| eval index_sourcetype=index . ":" . sourcetype
+| timechart span=1h sum(count) by index_sourcetype
