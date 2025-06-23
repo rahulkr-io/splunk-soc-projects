@@ -138,10 +138,11 @@ This project helps identify and visualize **active log sources (indexes and sour
 
 ## ✍️ Author
 
-* **Name**: Rahul krishna R
-* **Role**: SOC Analyst
-* **Tools Used**: Splunk
+**Rahul Krishna R**  
+Defensive Security Practitioner | Hands-on with SOC, Threat Detection & Cryptography  
+This project is part of my practical cybersecurity portfolio, built to simulate real-world SOC use cases using Splunk.
 
 ---
+
 
 
