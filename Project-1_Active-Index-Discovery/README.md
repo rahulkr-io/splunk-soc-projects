@@ -52,7 +52,7 @@ This project helps identify and visualize **active log sources (indexes and sour
 | sort - count
 ```
 
-✔️ Gives event counts by sourcetype inside each index.
+✔️ Gives event counts by sourcetype inside each index.   
 ✔️ Helps identify which types of logs are being collected.
 
 ---
@@ -64,7 +64,7 @@ This project helps identify and visualize **active log sources (indexes and sour
 | sort - count
 ```
 
-✔️ Adds time dimension to log analysis.
+✔️ Adds time dimension to log analysis.   
 ✔️ Useful for seeing log flow minute by minute.
 
 ---
@@ -89,9 +89,9 @@ This project helps identify and visualize **active log sources (indexes and sour
 | timechart span=1h sum(count) by index_sourcetype
 ```
 
-✔️ Shows log trends over time.
-✔️ `eval` is used to combine index and sourcetype into one label like `main:WinEventLog`.
-✔️ `.` is the **concatenation operator** in SPL (it joins strings).
+✔️ Shows log trends over time.  
+✔️ `eval` is used to combine index and sourcetype into one label like `main:WinEventLog`.   
+✔️ `.` is the **concatenation operator** in SPL (it joins strings).   
 
 ---
 
@@ -99,31 +99,31 @@ This project helps identify and visualize **active log sources (indexes and sour
 
 ### ✅ Index Count Table
 
-![Index Table](./project1_index_table.png)
+![Index Table](./screenshots/project1_index_table.png)
 
 ---
 
 ### ✅ Index + Sourcetype Table
 
-![Index Sourcetype Table](./project1_index_sourcetype_table.png)
+![Index Sourcetype Table](./screenshots/project1_index_sourcetype_table.png)
 
 ---
 
 ### ✅ Sorted Log Sources
 
-![Sorted Log Sources](./project1_index_sourcetype_sorted.png)
+![Sorted Log Sources](./screenshots/project1_index_sourcetype_sorted.png)
 
 ---
 
 ### ✅ Top 5 Log Sources
 
-![Top 5 Sources](./project1_top5_sources.png)
+![Top 5 Sources](./screenshots/project1_top5_sources.png)
 
 ---
 
 ### ✅ Timechart of Log Trends
 
-![Timechart](./project1_index_sourcetype_timechart.png)
+![Timechart](./screenshots/project1_index_sourcetype_timechart.png)
 
 ---
 
