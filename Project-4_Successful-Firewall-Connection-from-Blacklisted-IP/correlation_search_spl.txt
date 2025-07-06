@@ -1,0 +1,7 @@
+index=main sourcetype=fortigate_traffic action=allowed
+| where NOT (cidrmatch("10.0.0.0/8", src) OR cidrmatch("172.16.0.0/12", src) OR cidrmatch("192.168.0.0/16", src))
+| lookup blacklist_ips.csv src_ip OUTPUT src_ip as blacklisted_ip
+| search blacklisted_ip=*
+| stats count earliest(_time) as first_seen latest(_time) as last_seen by src, dest, dest_port, service, action, blacklisted_ip
+| eval first_seen=strftime(first_seen, "%Y-%m-%d %H:%M:%S")
+| eval last_seen=strftime(last_seen, "%Y-%m-%d %H:%M:%S")
