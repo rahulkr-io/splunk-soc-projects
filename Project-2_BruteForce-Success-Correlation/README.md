@@ -1,4 +1,4 @@
-# 🛡️ Project 2: Brute Force Attack Detection with Success Correlation (Splunk ES | MITRE T1110)
+# 🛡️ Brute Force Attack Detection with Success Correlation (Splunk ES | MITRE T1110)
 
 > Detects a potential account compromise by identifying multiple failed login attempts (brute force) followed by a successful login.
 
