@@ -168,6 +168,6 @@ During implementation and testing, the following observations were made:
 
 **Rahul Krishna R**   
 Defensive Security Enthusiast | Hands-on with SOC, Threat Detection & Splunk Enterprise Security   
-This project is part of my practical cybersecurity portfolio focused on real-world detection engineering.  
+This project is part of my practical cybersecurity portfolio focused on real-world detection engineering.
 
 ```
