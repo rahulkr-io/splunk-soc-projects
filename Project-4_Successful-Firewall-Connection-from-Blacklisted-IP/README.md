@@ -6,7 +6,7 @@
 
 ## 🎯 Overview
 
-In this project, we designed and implemented a **threat intelligence-based correlation search** in **Splunk Enterprise Security (ES)** to detect allowed firewall traffic originating from **malicious IPs present in a custom blacklist**. These IPs were validated using external **Threat Intelligence (TI) platforms**, and we discovered successful **SSH and custom TCP port (4433)** connections from high-confidence malicious sources.
+In this project, we designed and implemented a **threat intelligence-based correlation search** in **Splunk Enterprise Security (ES)** to detect allowed firewall traffic originating from **malicious IPs present in a custom blacklist**. These IPs were validated using external **Threat Intelligence (TI) platforms**, and we discovered successful **SSH , HTTPS and custom TCP port (4433)** connections from high-confidence malicious sources.
 
 The goal was to simulate a **real-world SOC use case** involving:
 
@@ -90,12 +90,24 @@ index=main sourcetype=fortigate_traffic action=allowed
 
 | Blacklisted IP  | Destination (Masked) | Port | Service  | Total Events |
 | --------------- | -------------------- | ---- | -------- | ------------ |
-| 195.178.110.160 | xxx.xx.xxx.50       | 22   | SSH      | 135          |
+| 195.178.110.160 | xxx.xx.xxx.50       | 22   | SSH      | 207          |
 | 3.130.96.91     | xxx.xx.xxx.50       | 22   | SSH      | 14           |
 | 3.131.215.38    | xxx.xx.xxx.50      | 22   | SSH      | 6            |
 | 3.131.215.38    | xxx.xx.xxx.50       | 4433 | tcp/4433 | 6            |
 
 * 📸 [Search Result - 7 Days](./screenshots/spl_results/raw_query_7days.png)
+
+---
+
+## 🧠 MITRE ATT&CK Mapping
+
+This detection aligns with the following MITRE ATT&CK techniques:
+
+| Technique ID | Technique Name                                 | Description                                                                                  |
+|--------------|------------------------------------------------|----------------------------------------------------------------------------------------------|
+| T1071.002     | Application Layer Protocol: SSH                | Indicates command-and-control or unauthorized access via SSH from known malicious IPs       |
+| T1071.001     | Application Layer Protocol: Web                | TCP/4433 connections suggest possible encrypted web-based communication (HTTP/S tunneling)  |
+| T1105         | Ingress Tool Transfer                          | Malicious IPs with SSH access could be used to upload malware, tools, or scripts            |
 
 ---
 
@@ -110,7 +122,7 @@ index=main sourcetype=fortigate_traffic action=allowed
 | **Trigger**         | When number of results > 0                                           |
 | **Severity**        | High                                                                 |
 | **Security Domain** | Threat                                                               |
-| **MITRE ATT\&CK**   | T1046 – Network Service Scanning, T1071 – Application Layer Protocol |
+| **MITRE ATT\&CK**   | T1071.001, T1071.002, T1105
 
 * 📸 [Correlation Rule Form](./screenshots/correlation_rule/correlation_rule_conf.png)
 * 📸 [Notable Event Setup](./screenshots/correlation_rule/notable_conf.png)
@@ -136,39 +148,45 @@ To validate the malicious nature of the blacklisted IPs that were successfully a
 
 ---
 
-## 🛡️ SOC Analyst Actions
+## 🛡️ SOC Analyst Actions & Recommendations
 
-Following the detection of allowed firewall traffic from known blacklisted IPs, the following analyst-level recommendations are proposed for escalation and remediation:
+Following the detection of successful inbound connections from known blacklisted IPs, the following actions are recommended to ensure proper triage, containment, and prevention:
 
-🔍 Investigate the Destination Host (dest)  
-Perform endpoint triage on the internal asset that received traffic. Look for:
+---
 
-* SSH login activity
+### 🔍 1. Investigate Affected Destination Host(s)
 
-* Service exploitation or abnormal behavior
+Perform endpoint triage on the internal system(s) that received traffic:
 
-* Unexpected processes or user sessions
+* Check for **SSH login activity**, user sessions, and authentication patterns.
+* Look for signs of **service exploitation**, unexpected processes, or suspicious behavior.
+* Verify system logs, startup entries, and scheduled tasks for persistence indicators.
 
-🔒 Block Malicious IPs at the Perimeter   
-Immediately add the confirmed blacklisted IPs to the firewall blocklist. Where possible, integrate dynamic threat feeds to update this list in real-time.
+---
 
-🕵️ Review Historical Activity (Threat Hunting)     
-Analyze past logs (7–30 days) for any:
+### 🔒 2. Contain and Block Malicious IPs
 
-* Repeated attempts from the same IPs
+* Add the confirmed blacklisted IPs to the **firewall blocklist** to prevent further access.
+* Where supported, **integrate dynamic threat feeds** for real-time TI-based blocking.
+* Ensure the block is enforced across all relevant perimeter and cloud firewalls.
 
-* Similar activity targeting other internal hosts or ports
+---
 
-* Lateral movement attempts or privilege escalations
+### 🕵️ 3. Perform Historical Threat Hunting
 
-⚙️ Evaluate Exposed Services and Authentication Methods   
+Analyze past logs (last 7–30 days) to uncover broader activity:
 
-* Enforce SSH key-based authentication if password login is enabled.
+* Identify **repeated access attempts** from the same malicious IPs.
+* Look for connections to **other internal hosts or ports**.
+* Detect signs of **lateral movement** or privilege escalation within the network.
 
-* Review services running on non-standard ports like TCP/4433.
+---
 
-* Validate firewall rules to restrict external access only to essential services.
+### ⚙️ 4. Review External Exposure & Hardening Measures
 
+* Enforce **SSH key-based authentication** (if password login is enabled).
+* Investigate services running on **non-standard ports** (e.g., TCP/4433).
+* Audit and update **firewall rules** to ensure only essential services are exposed externally.
 
 ---
 
